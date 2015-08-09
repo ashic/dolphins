@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    <title>Dolphins</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .node {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+
+        .link {
+            stroke: #999;
+            stroke-opacity: .6;
+        }
+
+        .chart-container {
+            width: 50%;
+            float: left;
+        }
+
+        .pruned, .full {
+            border: 2px solid #eee
+        }
+
+        .legend {
+            clear: both;
+            text-align: center;
+        }
+
+        .legend > h3 {
+            background: #8af;
+            color: #fff;
+            padding: 2px;
+        }
+
+        .legend > div {
+            width: 100px;
+            height: 20px;
+            margin: auto;
+        }
+
+        .legend > span {
+            display: block;
+            width: 100px;
+            height: 20px;
+            background: -webkit-linear-gradient(left, #004400 , #00FF00); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(right, #004400 , #00FF00); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(right, #004400 , #00FF00); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(to right, #004400 , #00FF00); /* Standard syntax */
+            margin: auto;
+
+        }
+
+        h1 {
+            text-align: center;
+            background: #8af;
+            color: #fff;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+@*<script src="~/Scripts/dolphins.json"></script>*@
+<div>
+    <div class="chart-container">
+        <h1 class="h1">Dolphin Communities</h1>
+        <div class='pruned'></div>
+    </div>
+    <div class="chart-container">
+        <h1 class="h1">All Connections</h1>
+        <div class='full'></div>
+    </div>
+    <div class="legend">
+        <h3>Legend</h3>
+        <span>&nbsp;</span>
+        <div>Node Degree →</div>
+    </div>
+</div>
+<script>
+    var width = 600,
+        height = 500;
+
+    var color = d3.scale.category20();
+
+    var force = d3.layout.force()
+        .charge(-120)
+        .linkDistance(40)
+        .size([width, height]);
+
+    var svg = d3.select(".pruned").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    d3.json("/Scripts/dolphins_pruned.json", function (error, graph) {
+        if (error) throw error;
+
+        force
+            .nodes(graph.nodes)
+            .links(graph.links)
+            .start();
+
+        var link = svg.selectAll(".link")
+            .data(graph.links)
+            .enter().append("line")
+            .attr("class", "link")
+            .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+        var node = svg.selectAll(".node")
+            .data(graph.nodes)
+            .enter().append("circle")
+            .attr("class", "node")
+            .attr("r", function (d){return d.size;})
+            .style("fill", function (d) { return color(d.group); })
+            .style("fill", function (d) { return d3.hsl(80, 0.6, 0.20 + d.group * 0.1); })
+            .call(force.drag);
+
+        node.append("title")
+            .text(function(d) { return d.name; });
+
+        force.on("tick", function() {
+            link.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+            node.attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+        });
+    });
+
+    var forceFull = d3.layout.force()
+    .charge(-120)
+    .linkDistance(40)
+    .size([width, height]);
+
+    var svgFull = d3.select(".full").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+    d3.json("/Scripts/dolphins.json", function (error, graph) {
+        if (error) throw error;
+
+        forceFull
+            .nodes(graph.nodes)
+            .links(graph.links)
+            .start();
+
+        var link = svgFull.selectAll(".link")
+            .data(graph.links)
+            .enter().append("line")
+            .attr("class", "link")
+            .style("stroke-width", function (d) { return Math.sqrt(d.value); });
+
+        var node = svgFull.selectAll(".node")
+            .data(graph.nodes)
+            .enter().append("circle")
+            .attr("class", "node")
+            .attr("r", function (d) { return d.size; })
+            .style("fill", function (d) { return color(d.group); })
+            .style("fill", function (d) { return d3.hsl(80, 0.6, 0.20 + d.group * 0.1); })
+            .call(force.drag);
+
+        node.append("title")
+            .text(function (d) { return d.name; });
+
+        forceFull.on("tick", function () {
+            link.attr("x1", function (d) { return d.source.x; })
+                .attr("y1", function (d) { return d.source.y; })
+                .attr("x2", function (d) { return d.target.x; })
+                .attr("y2", function (d) { return d.target.y; });
+
+            node.attr("cx", function (d) { return d.x; })
+                .attr("cy", function (d) { return d.y; });
+        });
+    });
+
+</script>
+</body>
+</html>

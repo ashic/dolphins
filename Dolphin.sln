@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dolphin", "Dolphin\Dolphin.csproj", "{260D8CAA-2647-4418-BDD2-7E990CE08229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualization", "Visualization\Visualization.csproj", "{1F8FF90F-C130-460B-9B28-80A21AB5509D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{260D8CAA-2647-4418-BDD2-7E990CE08229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260D8CAA-2647-4418-BDD2-7E990CE08229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260D8CAA-2647-4418-BDD2-7E990CE08229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260D8CAA-2647-4418-BDD2-7E990CE08229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F8FF90F-C130-460B-9B28-80A21AB5509D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F8FF90F-C130-460B-9B28-80A21AB5509D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F8FF90F-C130-460B-9B28-80A21AB5509D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F8FF90F-C130-460B-9B28-80A21AB5509D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
